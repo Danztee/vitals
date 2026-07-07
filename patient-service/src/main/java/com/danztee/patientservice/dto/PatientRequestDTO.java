@@ -1,5 +1,6 @@
 package com.danztee.patientservice.dto;
 
+import com.danztee.patientservice.dto.validators.CreatePatientValidationGroup;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -34,7 +35,7 @@ public class PatientRequestDTO {
     @NotNull(message = "Date of birth cannot be blank")
     private LocalDate dateOfBirth;
 
-    @NotNull(message = "Registration date cannot be blank")
+    @NotNull(groups = CreatePatientValidationGroup.class, message = "Registration date cannot be blank")
     private LocalDateTime registrationDate;
 
 }
