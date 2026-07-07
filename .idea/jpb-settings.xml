@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DatabaseMigrationSettings" lastSelectedDirectory="$PROJECT_DIR$/patient-service/src/main/resources/db/migration" />
+  <component name="FlywaySettings" flywayVersionPattern="#date(&quot;yyyyMMddHHmmss&quot;)" flywayMigrationSeparator="" flywayMigrationDescription="" />
+</project>

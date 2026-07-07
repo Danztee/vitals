@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit moduleName="patient-service" name="patient-service" framework="JPA" ormUnit="patient-service:patient-service" defaultDataSourceId="b4b83893-215b-4286-bec5-c68225b018e9" />
+    </persistence-units>
+  </component>
+</project>
