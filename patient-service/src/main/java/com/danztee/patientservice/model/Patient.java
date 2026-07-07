@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -22,24 +23,29 @@ public class Patient {
     private UUID id;
 
     @NotNull
+    @Column(nullable = false)
     private String firstName;
 
     @NotNull
+    @Column(nullable = false)
     private String lastName;
 
     @NotNull
     @Email
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @NotNull
+    @Column(nullable = false)
     private String address;
 
     private String phoneNumber;
 
     @NotNull
-    private LocalDateTime dateOfBirth;
+    @Column(nullable = false)
+    private LocalDate dateOfBirth;
 
     @NotNull
+    @Column(nullable = false)
     private LocalDateTime registrationDate;
 }

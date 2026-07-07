@@ -1,5 +1,6 @@
 package com.danztee.patientservice.mapper;
 
+import com.danztee.patientservice.dto.PatientRequestDTO;
 import com.danztee.patientservice.dto.PatientResponseDTO;
 import com.danztee.patientservice.model.Patient;
 
@@ -21,5 +22,22 @@ public class PatientMapper {
                 .address(patient.getAddress())
                 .phoneNumber(patient.getPhoneNumber())
                 .build();
+    }
+
+
+    public static Patient toModel(PatientRequestDTO patientRequestDTO) {
+        Patient patient = new Patient();
+
+        patient = Patient.builder()
+                .firstName(patientRequestDTO.getFirstName())
+                .lastName(patientRequestDTO.getLastName())
+                .email(patientRequestDTO.getEmail())
+                .address(patientRequestDTO.getAddress())
+                .phoneNumber(patientRequestDTO.getPhoneNumber())
+                .dateOfBirth(patientRequestDTO.getDateOfBirth())
+                .registrationDate(patientRequestDTO.getRegistrationDate())
+                .build();
+
+        return patient;
     }
 }
