@@ -4,6 +4,7 @@ import com.danztee.patientservice.dto.PatientRequestDTO;
 import com.danztee.patientservice.dto.PatientResponseDTO;
 import com.danztee.patientservice.exception.EmailAlreadyExistsException;
 import com.danztee.patientservice.exception.PatientNotFoundException;
+import com.danztee.patientservice.grpc.BillingServiceGrpcClient;
 import com.danztee.patientservice.mapper.PatientMapper;
 import com.danztee.patientservice.model.Patient;
 import com.danztee.patientservice.repository.PatientRepository;
@@ -15,9 +16,11 @@ import java.util.UUID;
 @Service
 public class PatientService {
     private final PatientRepository patientRepository;
+    private final BillingServiceGrpcClient billingServiceGrpcClient;
 
-    public PatientService(PatientRepository patientRepository) {
+    public PatientService(PatientRepository patientRepository, BillingServiceGrpcClient billingServiceGrpcClient) {
         this.patientRepository = patientRepository;
+        this.billingServiceGrpcClient = billingServiceGrpcClient;
     }
 
     public List<PatientResponseDTO> getPatients() {
@@ -35,6 +38,10 @@ public class PatientService {
 
         Patient newPatient = patientRepository
                 .save(PatientMapper.toModel(patientRequestDTO));
+
+        billingServiceGrpcClient.createBillingAccount(newPatient.getId().toString(),
+                newPatient.getFirstName(), newPatient.getLastName(),
+                newPatient.getEmail(), newPatient.getPhoneNumber());
 
         return PatientMapper.toDTO(newPatient);
     }
