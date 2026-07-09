@@ -5,9 +5,11 @@ import com.danztee.patientservice.dto.PatientResponseDTO;
 import com.danztee.patientservice.exception.EmailAlreadyExistsException;
 import com.danztee.patientservice.exception.PatientNotFoundException;
 import com.danztee.patientservice.grpc.BillingServiceGrpcClient;
+import com.danztee.patientservice.kafka.KafkaProducer;
 import com.danztee.patientservice.mapper.PatientMapper;
 import com.danztee.patientservice.model.Patient;
 import com.danztee.patientservice.repository.PatientRepository;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +19,14 @@ import java.util.UUID;
 public class PatientService {
     private final PatientRepository patientRepository;
     private final BillingServiceGrpcClient billingServiceGrpcClient;
+    private final KafkaProducer kafkaProducer;
 
-    public PatientService(PatientRepository patientRepository, BillingServiceGrpcClient billingServiceGrpcClient) {
+    public PatientService(PatientRepository patientRepository,
+                          BillingServiceGrpcClient billingServiceGrpcClient,
+                          KafkaProducer kafkaProducer) {
         this.patientRepository = patientRepository;
         this.billingServiceGrpcClient = billingServiceGrpcClient;
+        this.kafkaProducer = kafkaProducer;
     }
 
     public List<PatientResponseDTO> getPatients() {
@@ -30,7 +36,7 @@ public class PatientService {
 
     }
 
-    public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
+    public PatientResponseDTO createPatient(@NonNull PatientRequestDTO patientRequestDTO) {
 
         if (patientRepository.existsByEmail(patientRequestDTO.getEmail())) {
             throw new EmailAlreadyExistsException("Email already exists");
@@ -43,11 +49,13 @@ public class PatientService {
                 newPatient.getFirstName(), newPatient.getLastName(),
                 newPatient.getEmail(), newPatient.getPhoneNumber());
 
+        kafkaProducer.sendEvent(newPatient);
+
         return PatientMapper.toDTO(newPatient);
     }
 
 
-    public PatientResponseDTO updatePatient(UUID id, PatientRequestDTO patientRequestDTO) {
+    public PatientResponseDTO updatePatient(UUID id, @NonNull PatientRequestDTO patientRequestDTO) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found"));
 
