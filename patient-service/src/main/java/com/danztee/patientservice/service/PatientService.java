@@ -9,12 +9,14 @@ import com.danztee.patientservice.kafka.KafkaProducer;
 import com.danztee.patientservice.mapper.PatientMapper;
 import com.danztee.patientservice.model.Patient;
 import com.danztee.patientservice.repository.PatientRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class PatientService {
     private final PatientRepository patientRepository;
@@ -81,5 +83,7 @@ public class PatientService {
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found"));
 
         patientRepository.deleteById(id);
+
+        log.info("Deleted patient with id {}", id);
     }
 }

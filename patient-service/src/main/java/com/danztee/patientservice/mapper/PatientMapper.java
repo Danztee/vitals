@@ -26,9 +26,10 @@ public class PatientMapper {
 
 
     public static Patient toModel(PatientRequestDTO patientRequestDTO) {
-        Patient patient = new Patient();
+//        new Patient();
+//        Patient patient;
 
-        patient = Patient.builder()
+       return Patient.builder()
                 .firstName(patientRequestDTO.getFirstName())
                 .lastName(patientRequestDTO.getLastName())
                 .email(patientRequestDTO.getEmail())
@@ -38,6 +39,6 @@ public class PatientMapper {
                 .registrationDate(patientRequestDTO.getRegistrationDate())
                 .build();
 
-        return patient;
+//        return patient;
     }
 }
