@@ -39,6 +39,7 @@ public class Patient {
     @Column(nullable = false)
     private String address;
 
+    @Column(unique = true)
     private String phoneNumber;
 
     @NotNull
